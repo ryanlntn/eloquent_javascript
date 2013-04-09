@@ -1,3 +1,7 @@
+// Chapter 1
+// Introduction
+//
+
 // When a program works, it is beautiful. 
 // The art of programming is the skill of controlling complexity. 
 // The great program is subdued, made simple in its complexity.

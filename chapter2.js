@@ -1,3 +1,7 @@
+// Chapter 2
+// Basic JavaScript: values, variables, and control flow
+//
+
 // Inside the computer's world, there is only data. That which is not data, does not exist. 
 
 // In JavaScript's system, most of this data is neatly separated into things called values. 
