@@ -48,3 +48,13 @@ function countZeroes(array) {
 var a = [0,0,1,2];
 print(countZeroes(a));
 print(count(equals(1, a)));
+
+// Write a function processParagraph that, when given a paragraph string as its argument, checks whether
+// this paragraph is a header. If it is, it strips off the '%' characters and counts their number.
+// Then, it returns an object with two properties, content, which contains the text inside the paragraph, and
+// type, which contains the tag that this paragraph must be wrapped in, "p" for regular paragraphs, "h1" for
+// headers with one '%', and "hX" for headers with X '%' characters.
+//
+// Remember that strings have a charAt method that can be used to look at a specific character inside them.
+//
+// Ex. 6.2
