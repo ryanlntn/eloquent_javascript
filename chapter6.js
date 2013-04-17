@@ -71,3 +71,99 @@ function processParagraph(paragraph) {
 }
 
 show(processParagraph(paragraphs[0]));
+
+// Build a function splitParagraph which, given a paragraph string, returns an array of paragraph
+// fragments. Think of a good way to represent the fragments.
+
+// The method indexOf, which searches for a character or sub-string in a string and returns its
+// position, or -1 if not found, will probably be useful in some way here.
+
+// This is a tricky algorithm, and there are many not-quite-correct or way-too-long ways to
+// describe it. If you run into problems, just think about it for a minute. Try to write inner
+// functions that perform the smaller actions that make up the algorithm.
+//
+// Ex. 6.3
+
+function splitParagraph(text) {
+  function indexOrEnd(character) {
+    var index = text.indexOf(character);
+    return index == -1 ? text.length : index;
+  }
+
+  function takeNormal() {
+    var end = reduce(Math.min, text.length,
+                     map(indexOrEnd, ["*", "{"]));
+    var part = text.slice(0, end);
+    text = text.slice(end);
+    return part;
+  }
+
+  function takeUpTo(character) {
+    var end = text.indexOf(character, 1);
+    if (end == -1)
+      throw new Error("Missing closing '" + character + "'");
+    var part = text.slice(1, end);
+    text = text.slice(end + 1);
+    return part;
+  }
+
+  var fragments = [];
+
+  while (text != "") {
+    if (text.charAt(0) == "*")
+      fragments.push({type: "emphasised",
+                      content: takeUpTo("*")});
+    else if (text.charAt(0) == "{")
+      fragments.push({type: "footnote",
+                      content: takeUpTo("}")});
+    else
+      fragments.push({type: "normal",
+                      content: takeNormal()});
+  }
+  return fragments;
+}
+
+// Looking back at the example HTML document if necessary, write an image function which, when
+// given the location of an image file, will create an img HTML element.
+//
+// Ex. 6.4
+
+function image(src) {
+  return tag("img", [], {src: src});
+}
+
+
+// Write a function renderFragment, and use that to implement another function
+// renderParagraph, which takes a paragraph object (with the footnotes already filtered out), and produces
+// the correct HTML element (which might be a paragraph or a header, depending
+// on the type property of the paragraph object).
+
+// This function might come in useful for rendering the footnote references:
+
+function footnote(number) {
+  return tag("sup", [link("#footnote" + number,
+                          String(number))]);
+}
+// A sup tag will show its content as 'superscript', which
+// means it will be smaller and a little higher than other text. The target of the link
+// will be something like "#footnote1". Links that contain a '#' character refer
+// to 'anchors' within a page, and in this case we will use them to make it so that
+// clicking on the footnote link will take the reader to the bottom of the page, where the footnotes live.
+
+// The tag to render emphasised fragments with is em, and normal text can be rendered without any extra tags.
+//
+// Ex. 6.5
+
+function renderParagraph(paragraph) {
+  return tag(paragraph.type, map(renderFragment,
+                                 paragraph.content));
+}
+
+function renderFragment(fragment) {
+  if (fragment.type == "reference")
+    return footnote(fragment.number);
+  else if (fragment.type == "emphasised")
+    return tag("em", [fragment.content]);
+  else if (fragment.type == "normal")
+    return fragment.content;
+}
